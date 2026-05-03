@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="#2196F3">
     
-    <title>Âncora Treino v7.4</title>
+    <title>Âncora Treino v7.5</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -98,7 +98,6 @@
         input:checked + .slider-toggle { background-color: var(--primary); }
         input:checked + .slider-toggle:before { transform: translateX(24px); }
 
-        /* BOTÕES DE PRESET (NÍVEIS) */
         .preset-group { display: flex; gap: 8px; margin-top: 12px; }
         .preset-btn { flex: 1; padding: 12px 0; border: 2px solid #CBD5E1; background: white; color: #475569; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 1.1rem; }
         .preset-btn.active { background: var(--primary); color: white; border-color: var(--primary-dark); }
@@ -125,7 +124,7 @@
             <button class="btn-nav" onclick="uiClick(); openSettings();" title="Configurações">
                 <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
             </button>
-            <button class="btn-nav" onclick="uiClick(); resetSystem();" title="Zerar Progresso">
+            <button class="btn-nav" onclick="uiClick(); promptResetSystem();" title="Zerar Progresso">
                 <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
             </button>
         </div>
@@ -169,17 +168,36 @@
     </main>
 </div>
 
+<div id="custom-alert" class="modal-overlay" style="z-index: 999;">
+    <div class="modal-content" style="max-width: 350px;">
+        <h3 id="custom-alert-title" style="color: var(--primary-dark); margin-bottom: 15px;">Aviso</h3>
+        <p id="custom-alert-msg" style="margin-bottom: 20px; font-size: 0.95rem; color: #475569;"></p>
+        <button class="btn-modal" style="background: var(--primary); color: white; margin-top: 0;" onclick="closeCustomAlert()">Entendi</button>
+    </div>
+</div>
+
+<div id="custom-confirm" class="modal-overlay" style="z-index: 999;">
+    <div class="modal-content" style="max-width: 350px;">
+        <h3 id="custom-confirm-title" style="color: var(--danger); margin-bottom: 15px;">Atenção</h3>
+        <p id="custom-confirm-msg" style="margin-bottom: 20px; font-size: 0.95rem; color: #475569;"></p>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn-modal" style="background: #E2E8F0; color: #333; flex: 1; margin-top: 0;" onclick="closeCustomConfirm(false)">Cancelar</button>
+            <button class="btn-modal" style="background: var(--danger); color: white; flex: 1; margin-top: 0;" onclick="closeCustomConfirm(true)">Confirmar</button>
+        </div>
+    </div>
+</div>
+
 <div id="modal-gm" class="modal-overlay">
     <div class="modal-content" style="text-align: left;">
         <h3 style="margin-bottom: 15px; color: #FF9800; text-align: center;">Jogo da Palavra</h3>
         <div class="help-item">
             <strong>📝 Como funciona?</strong>
-            <p>Neste módulo extra, pode adicionar palavras personalizadas para aplicar a dinâmica da app no treino de leitura. 
-            Para adicionar corretamente, separe as palavras por <b>vírgula ( , )</b>. Não há limite de palavras.</p>
-            <p style="margin-top: 8px; font-weight:bold; color:var(--primary-dark);"><i>Exemplo: batata, cachorro, pílula</i></p>
+            <p>Neste módulo extra, você pode adicionar palavras personalizadas para focar o treino na dificuldade exata do aluno. 
+            Separe as palavras por <b>vírgula ( , )</b>.</p>
+            <p style="margin-top: 8px; font-weight:bold; color:var(--primary-dark);"><i>Exemplo: macaco, banana, panela</i></p>
         </div>
         <div style="margin-bottom: 15px; padding: 0 10px;">
-            <textarea id="gm-words-input" placeholder="batata, cachorro, pílula" style="display:block; width:100%; height:120px; padding:10px; border-radius:8px; border:2px solid #CBD5E1; font-size:1.1rem; font-family:sans-serif; resize:none;"></textarea>
+            <textarea id="gm-words-input" placeholder="macaco, banana, panela" style="display:block; width:100%; height:120px; padding:10px; border-radius:8px; border:2px solid #CBD5E1; font-size:1.1rem; font-family:sans-serif; resize:none;"></textarea>
         </div>
         <div style="display: flex; gap: 10px;">
             <button class="btn-modal" style="background: #E2E8F0; color: #333; flex: 1;" onclick="uiClick(); closeGMModal()">Cancelar</button>
@@ -238,11 +256,7 @@
         </div>
 
         <div class="credits">
-            <p>Ferramenta gratuita produzida por desenvolvedor independente para apoiar a educação baseada em evidências.</p>
-            <a href="https://www.instagram.com/oanalistacomportamental" target="_blank" class="btn-modal insta-btn" onclick="uiClick()">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="margin-right: 5px;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                Apoie @oanalistacomportamental
-            </a>
+            <p>Ferramenta educacional desenvolvida para treinos baseados em evidências. Envie os relatórios gerados para acompanhar a evolução.</p>
         </div>
 
         <div style="display: flex; gap: 10px; margin-top: 15px;">
@@ -257,25 +271,21 @@
         <h3 style="margin-bottom: 15px; color: var(--primary-dark);">Como Treinar</h3>
         <div class="help-item">
             <strong>📖 O Exercício</strong>
-            <p>O aluno lê a sílaba. Se ele ler certo, clique em ✔. Se errar ou demorar, clique em ✖.</p>
+            <p>A criança lê a sílaba que aparecer. Se ela ler certo, clique em ✔. Se errar ou demorar, clique em ✖.</p>
         </div>
         <div class="help-item">
-            <strong>🚫 Sem Dicas</strong>
-            <p>Deixe o aluno tentar sozinho. Não dê respostas ou pistas durante a tarefa.</p>
+            <strong>🚫 Sem Dicas (Autonomia)</strong>
+            <p>Deixe a criança tentar sozinha. Não dê a resposta antes que ela tente.</p>
         </div>
         <div class="help-item">
             <strong>🔄 Errou? Revise!</strong>
-            <p>No final, a app mostra os erros. Use o som (🔊) para ele ouvir, repetir e tente novamente.</p>
+            <p>No final, a fase mostra onde houve erros. Use o som (🔊) para a criança ouvir, repetir, e depois tentem a fase novamente.</p>
         </div>
         <div class="help-item">
             <strong>🔓 Evolução</strong>
-            <p>Acerte 100% para liberar a próxima letra. Ao concluir, pode aumentar a dificuldade nas configurações e recomeçar.</p>
+            <p>Ao acertar 100%, a próxima família de sílabas será liberada.</p>
         </div>
-        <div class="help-item">
-            <strong>⚙️ Modos Extras</strong>
-            <p>Nas configurações, ative o modo Fácil ou o modo fluência (difícil) manualmente ou escolha um nível preestabelecido.</p>
-        </div>
-        <button class="btn-modal" style="background: var(--primary); color: white;" onclick="uiClick(); toggleHelp(false, true)">Começar</button>
+        <button class="btn-modal" style="background: var(--primary); color: white;" onclick="uiClick(); toggleHelp(false, true)">Entendi, Começar</button>
     </div>
 </div>
 
@@ -283,14 +293,14 @@
     <div class="modal-content" style="text-align: left;">
         <h3 style="margin-bottom: 15px; color: var(--primary-dark); text-align: center;">Identificação</h3>
         <div class="help-item">
-            <strong>📋 Gerar Relatório</strong>
-            <p>O professor pode solicitar o envio dos relatórios de treino para acompanhar a evolução em casa.</p>
+            <strong>📋 Registro de Evolução</strong>
+            <p>As informações ficarão salvas no cabeçalho do relatório que você enviar para a escola.</p>
         </div>
         <div style="margin-bottom: 15px; padding: 0 10px;">
-            <p style="font-size: 0.85rem; color: #475569; margin-bottom: 8px;"><strong>Digite o nome completo do aluno para o cabeçalho:</strong></p>
-            <input type="text" id="student-name-input" placeholder="Nome completo..." autocomplete="off">
+            <p style="font-size: 0.85rem; color: #475569; margin-bottom: 8px;"><strong>Qual o nome da criança que vai treinar?</strong></p>
+            <input type="text" id="student-name-input" placeholder="Digite o nome..." autocomplete="off">
         </div>
-        <button class="btn-modal" style="background: var(--success); color: white;" onclick="uiClick(); saveName()">Salvar e Treinar</button>
+        <button class="btn-modal" style="background: var(--success); color: white;" onclick="uiClick(); saveName()">Salvar e Iniciar</button>
     </div>
 </div>
 
@@ -302,13 +312,43 @@
             <div class="review-header">Ouvir e Repetir:</div>
             <div id="review-list" class="review-list"></div>
         </div>
-        <button class="btn-modal" style="background: var(--success); color: white;" id="btn-modal-next" onclick="uiClick(); nextPhase()">Próxima Letra</button>
+        <button class="btn-modal" style="background: var(--success); color: white;" id="btn-modal-next" onclick="uiClick(); nextPhase()">Próxima Família</button>
         <button class="btn-modal" style="background: #E2E8F0; color: #333;" onclick="uiClick(); retryPhase()">Tentar Novamente</button>
-        <button class="btn-modal" style="background: #F1F5F9; color: #475569;" onclick="uiClick(); showMenu()">Início</button>
+        <button class="btn-modal" style="background: #F1F5F9; color: #475569;" onclick="uiClick(); showMenu()">Voltar ao Início</button>
     </div>
 </div>
 
 <script>
+    // Gerenciamento dos Modais Customizados
+    let confirmCallback = null;
+
+    function showCustomAlert(title, msg) {
+        document.getElementById('custom-alert-title').innerText = title;
+        document.getElementById('custom-alert-msg').innerText = msg;
+        document.getElementById('custom-alert').style.display = 'flex';
+    }
+
+    function closeCustomAlert() {
+        uiClick();
+        document.getElementById('custom-alert').style.display = 'none';
+    }
+
+    function showCustomConfirm(title, msg, callback) {
+        document.getElementById('custom-confirm-title').innerText = title;
+        document.getElementById('custom-confirm-msg').innerText = msg;
+        confirmCallback = callback;
+        document.getElementById('custom-confirm').style.display = 'flex';
+    }
+
+    function closeCustomConfirm(result) {
+        uiClick();
+        document.getElementById('custom-confirm').style.display = 'none';
+        if (confirmCallback) {
+            confirmCallback(result);
+            confirmCallback = null;
+        }
+    }
+
     // Inicialização segura de áudio e sons
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playTone(freq, type, duration, vol) {
@@ -351,7 +391,7 @@
 
     const cvcArr = ['NAS','LES','BIS','MOS','CUS','PAS','CAN','NEM','VIM','BOM','MUM','GEN','CON','BAR','FER','CIR','POR','SUR','MAR','CAL','MEL','MIL','SOL','SUL','DEZ','PAZ'];
 
-    // Lógica segura de Carregamento de Estado
+    // Lógica de Carregamento de Estado
     let state = JSON.parse(localStorage.getItem('ancora_treino_state')) || {};
     state.unlocked = state.unlocked || ['C'];
     state.history = state.history || {};
@@ -413,27 +453,34 @@
         const hasChanged = newEasyMode !== state.easyMode || newFluencyMode !== state.fluencyMode || newTimeLimit !== state.timeLimit || newLevel !== state.currentLevel;
 
         if (hasChanged) {
-            if (confirm("⚠️ ATENÇÃO: Mudar as configurações irá reiniciar todas as fases para garantir a validade do relatório.\n\nDeseja continuar?")) {
-                state.easyMode = newEasyMode;
-                state.fluencyMode = newFluencyMode;
-                state.timeLimit = newTimeLimit;
-                state.currentLevel = newLevel;
-                
-                state.unlocked = ['C'];
-                state.history = {};
-                state.lastUsedFluency = null;
-                state.lastUsedEasyMode = null;
-                
-                localStorage.setItem('ancora_treino_state', JSON.stringify(state));
-                document.getElementById('modal-settings').style.display = 'none';
-                renderGrid(); 
-            } else { document.getElementById('modal-settings').style.display = 'none'; }
+            showCustomConfirm("Atenção", "Mudar as configurações irá reiniciar todas as fases para garantir a validade do relatório.\n\nDeseja continuar?", function(confirmed) {
+                if (confirmed) {
+                    state.easyMode = newEasyMode;
+                    state.fluencyMode = newFluencyMode;
+                    state.timeLimit = newTimeLimit;
+                    state.currentLevel = newLevel;
+                    
+                    state.unlocked = ['C'];
+                    state.history = {};
+                    state.lastUsedFluency = null;
+                    state.lastUsedEasyMode = null;
+                    
+                    localStorage.setItem('ancora_treino_state', JSON.stringify(state));
+                    document.getElementById('modal-settings').style.display = 'none';
+                    renderGrid(); 
+                } else {
+                    document.getElementById('modal-settings').style.display = 'none';
+                }
+            });
         } else { document.getElementById('modal-settings').style.display = 'none'; }
     }
 
     function saveName() {
         const inputName = document.getElementById('student-name-input').value.trim();
-        if (!inputName) { alert("Por favor, preencha o nome do aluno."); return; }
+        if (!inputName) { 
+            showCustomAlert("Aviso", "Por favor, digite o nome da criança para identificarmos nos relatórios."); 
+            return; 
+        }
         state.studentName = inputName;
         localStorage.setItem('ancora_treino_state', JSON.stringify(state));
         document.getElementById('modal-name').style.display = 'none';
@@ -447,9 +494,7 @@
         let allDone = true;
         
         blockConfig.forEach(conf => {
-            const h = state.history[conf.c];
-            const unlocked = state.unlocked.includes(conf.c);
-            const complete = h && h.every(a => a.correct);
+            const h = state.history[conf.c], unlocked = state.unlocked.includes(conf.c), complete = h && h.every(a => a.correct);
             if (!complete) allDone = false;
             
             const card = document.createElement('div'); card.className = `phase-card ${!unlocked ? 'locked' : ''} ${complete ? 'complete' : ''}`;
@@ -484,7 +529,10 @@
     function startGM() {
         const input = document.getElementById('gm-words-input').value;
         let words = input.split(',').map(w => w.trim()).filter(w => w.length > 0);
-        if (words.length === 0) { alert("Adicione pelo menos uma palavra no formato correto."); return; }
+        if (words.length === 0) { 
+            showCustomAlert("Aviso", "Por favor, digite pelo menos uma palavra para jogar, separando-as por vírgula."); 
+            return; 
+        }
         
         state.customWords = words;
         localStorage.setItem('ancora_treino_state', JSON.stringify(state));
@@ -580,7 +628,7 @@
         
         if (allCorrect) { 
             modalTitle.innerText = "🏆"; 
-            if (session.isPseudo) modalMsg.innerText = "Incrível! Leu todas as misturas!";
+            if (session.isPseudo) modalMsg.innerText = "Incrível! Você leu todas as misturas!";
             else if (session.isCVC) modalMsg.innerText = "Excelente! Domínio das sílabas travadas!";
             else if (session.isGM) modalMsg.innerText = "Incrível! Leitura de palavras concluída!";
             else modalMsg.innerText = "Excelente! Fase Liberada.";
@@ -589,7 +637,7 @@
         }
         else { 
             modalTitle.innerText = "🎯"; 
-            modalMsg.innerText = "Fim do Treino. Vamos rever?"; 
+            modalMsg.innerText = "Fim do Treino. Vamos revisar o que foi mais difícil?"; 
             btnNext.style.display = 'none'; 
             reviewList.innerHTML = ''; 
             wrong.forEach(i => { 
@@ -677,14 +725,15 @@
         area.style.display = 'block';
         area.select();
         document.execCommand('copy');
-        alert(`Relatório Resumido copiado! Cole-o na aplicação de Gestão.`);
         area.style.display = 'none';
+        
+        showCustomAlert("Resumo Copiado!", "O resumo do treino foi copiado! Agora você já pode colar na conversa do WhatsApp e enviar para o professor(a) avaliar a evolução.");
     }
 
-    // PDF CORRIGIDO E PROTEGIDO
+    // GERAÇÃO DE PDF TABULADO COM GRELHA DE 6 COLUNAS
     function generateDetailedReport() {
         if (!window.jspdf) {
-            alert("A biblioteca de PDF ainda está a carregar ou foi bloqueada (tente desligar o adblocker). Aguarde um momento e tente novamente.");
+            showCustomAlert("Aguarde...", "O gerador de arquivos está sendo inicializado. Aguarde um segundo e tente novamente.");
             return;
         }
 
@@ -718,9 +767,11 @@
 
         let tableBody = [];
         
+        // Função auxiliar para inserir os dados de cada fase na tabela com layout de 6 colunas
         const addPhaseData = (phaseName, historyArray) => {
             if (!historyArray || historyArray.length === 0) return;
             
+            // Cria a linha de cabeçalho cinza para a fase ocupando as 6 colunas
             tableBody.push([
                 { 
                     content: `Fase: ${phaseName} (${historyArray.filter(x=>x.correct).length}/${historyArray.length} acertos)`, 
@@ -729,6 +780,7 @@
                 }
             ]);
             
+            // Agrupa os itens de 3 em 3 para preencher a grelha horizontalmente
             for (let i = 0; i < historyArray.length; i += 3) {
                 let row = [];
                 for (let j = 0; j < 3; j++) {
@@ -737,13 +789,16 @@
                         row.push(item.syllable);
                         row.push(item.correct ? 'ACERTO' : 'ERRO');
                     } else {
-                        row.push(""); row.push("");
+                        // Preenche com células vazias caso não haja itens suficientes para fechar a linha
+                        row.push("");
+                        row.push("");
                     }
                 }
                 tableBody.push(row);
             }
         };
 
+        // Alimenta a tabela com o histórico sequencial
         blockConfig.forEach(conf => {
             addPhaseData(`Letra ${conf.c}`, state.history[conf.c]);
         });
@@ -751,10 +806,11 @@
         addPhaseData('Jogo da Palavra (GM)', state.history['GM']);
 
         if (tableBody.length === 0) {
-            alert("Nenhum dado de treino encontrado para gerar o relatório.");
+            showCustomAlert("Aviso", "Nenhum dado de treino concluído foi encontrado. Realize alguns treinos antes de gerar o relatório!");
             return;
         }
 
+        // Renderiza a grelha de 6 colunas usando autoTable
         doc.autoTable({
             startY: 78,
             head: [['Sílaba/Palavra', 'Resultado', 'Sílaba/Palavra', 'Resultado', 'Sílaba/Palavra', 'Resultado']],
@@ -762,11 +818,15 @@
             theme: 'grid',
             headStyles: { fillColor: [33, 150, 243], textColor: [255, 255, 255], fontStyle: 'bold', halign: 'center' },
             columnStyles: {
-                0: { halign: 'center' }, 1: { halign: 'center', fontStyle: 'bold' },
-                2: { halign: 'center' }, 3: { halign: 'center', fontStyle: 'bold' },
-                4: { halign: 'center' }, 5: { halign: 'center', fontStyle: 'bold' }
+                0: { halign: 'center' },
+                1: { halign: 'center', fontStyle: 'bold' },
+                2: { halign: 'center' },
+                3: { halign: 'center', fontStyle: 'bold' },
+                4: { halign: 'center' },
+                5: { halign: 'center', fontStyle: 'bold' }
             },
             didParseCell: function(data) {
+                // Colore condicionalmente o texto de ACERTO (verde) e ERRO (vermelho) apenas nas colunas de Resultado (índices 1, 3 e 5)
                 if (data.section === 'body') {
                     if (data.column.index === 1 || data.column.index === 3 || data.column.index === 5) {
                         if (data.cell.raw === 'ACERTO') {
@@ -779,17 +839,21 @@
             }
         });
 
+        // Salva e faz download do PDF
         const fileName = `Relatorio_Ancora_Completo_${state.studentName ? state.studentName.replace(/\s+/g, '_') : 'Aluno'}.pdf`;
         doc.save(fileName);
+        showCustomAlert("Sucesso!", "O arquivo PDF foi gerado e o download começou. Agora você pode enviá-lo para o professor(a).");
     }
 
-    function resetSystem() { 
-        if(confirm("⚠️ ATENÇÃO: Ao realizar esta ação, irá EXCLUIR TODO O PROGRESSO salvo. Tem a certeza de que deseja continuar?")) { 
-            state = {unlocked:['C'], history:{}, studentName:'', easyMode: false, fluencyMode: false, timeLimit: 1, currentLevel: 3, customWords: []}; 
-            localStorage.clear(); 
-            showMenu(); 
-            toggleHelp(true, false); 
-        } 
+    function promptResetSystem() { 
+        showCustomConfirm("Tem Certeza?", "Esta ação irá EXCLUIR TODO O SEU PROGRESSO, o nome cadastrado e as configurações.\n\nO aplicativo voltará ao estado inicial (zero). Deseja continuar?", function(confirmed) {
+            if (confirmed) {
+                state = {unlocked:['C'], history:{}, studentName:'', easyMode: false, fluencyMode: false, timeLimit: 1, currentLevel: 3, customWords: []}; 
+                localStorage.clear(); 
+                showMenu(); 
+                toggleHelp(true, false);
+            }
+        });
     }
     
     function retryPhase() { 
