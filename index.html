@@ -7,6 +7,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="#2196F3">
     
+    <link rel="manifest" href="manifest.json">
+    
     <title>Âncora Treino v7.5</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
@@ -104,7 +106,7 @@
 
         .credits { margin-top: 10px; padding: 15px; background: #FFF0F5; border-radius: 12px; border: 1px solid #FBCFE8; }
         .credits p { font-size: 0.8rem; color: #9F1239; line-height: 1.4; margin-bottom: 10px; }
-        .insta-btn { display: flex; align-items: center; justify-content: center; background: #E1306C; color: white; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 0.9rem; }
+        .insta-btn { display: flex; align-items: center; justify-content: center; background: #E1306C; color: white; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -256,7 +258,8 @@
         </div>
 
         <div class="credits">
-            <p>Ferramenta educacional desenvolvida para treinos baseados em evidências. Envie os relatórios gerados para acompanhar a evolução.</p>
+            <p>Ferramenta gratuita desenvolvida de forma independente para treinos baseados em evidências.</p>
+            <a href="https://www.instagram.com/oanalistacomportamental/" target="_blank" class="insta-btn">@oanalistacomportamental</a>
         </div>
 
         <div style="display: flex; gap: 10px; margin-top: 15px;">
@@ -881,6 +884,15 @@
         else if (!state.studentName || state.studentName === '') { document.getElementById('modal-name').style.display = 'flex'; }
         renderGrid();
     };
+
+    // --- REGISTRO DO SERVICE WORKER ---
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then((reg) => console.log('SW Registrado. Escopo:', reg.scope))
+                .catch((err) => console.error('Erro ao registrar SW:', err));
+        });
+    }
 </script>
 </body>
 </html>
