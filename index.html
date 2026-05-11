@@ -7,9 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="#2196F3">
     
-    <link rel="manifest" href="manifest.json">
-    
-    <title>Âncora Treino v7.5</title>
+    <title>Âncora Treino v8.0</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -27,7 +25,9 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-color); color: #333; overflow-x: hidden; }
-        #app-container { max-width: 500px; margin: 0 auto; min-height: 100vh; background: var(--card-bg); display: flex; flex-direction: column; }
+        
+        /* O Container agora é flexível para ocupar a tela toda na lousa */
+        #app-container { max-width: 500px; margin: 0 auto; min-height: 100vh; background: var(--card-bg); display: flex; flex-direction: column; transition: all 0.3s; }
         
         header { background-color: var(--primary); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
         
@@ -71,8 +71,8 @@
         .modal-content { background: white; padding: 25px; border-radius: 24px; width: 90%; max-width: 400px; text-align: center; max-height: 85vh; overflow-y: auto; display: flex; flex-direction: column; }
         .btn-modal { display: block; width: 100%; padding: 18px; margin-top: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; flex-shrink: 0; text-decoration: none; }
         
-        input[type="text"] { width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #CBD5E1; font-size: 1rem; outline: none; background: #F8FAFC; color: #1E293B; margin-bottom: 5px; }
-        input[type="text"]:focus { border-color: var(--primary); background: white; }
+        input[type="text"], input[type="tel"] { width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #CBD5E1; font-size: 1rem; outline: none; background: #F8FAFC; color: #1E293B; margin-bottom: 10px; }
+        input[type="text"]:focus, input[type="tel"]:focus { border-color: var(--primary); background: white; }
 
         .help-item { text-align: left; margin-bottom: 12px; padding: 10px; background: #F1F5F9; border-radius: 8px; }
         .help-item strong { display: block; color: var(--primary-dark); margin-bottom: 2px; font-size: 0.95rem; }
@@ -86,7 +86,6 @@
         
         textarea { width: 100%; height: 120px; margin-top: 15px; font-family: monospace; font-size: 0.8rem; padding: 10px; border-radius: 8px; border: 1px solid #ccc; display: none; resize: none; }
 
-        /* ESTILOS DE CONFIGURAÇÃO (MODAL) */
         .config-section { text-align: left; background: #F8FAFC; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #E2E8F0; }
         .config-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
         .config-info { flex: 1; padding-right: 10px; }
@@ -104,9 +103,49 @@
         .preset-btn { flex: 1; padding: 12px 0; border: 2px solid #CBD5E1; background: white; color: #475569; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 1.1rem; }
         .preset-btn.active { background: var(--primary); color: white; border-color: var(--primary-dark); }
 
-        .credits { margin-top: 10px; padding: 15px; background: #FFF0F5; border-radius: 12px; border: 1px solid #FBCFE8; }
-        .credits p { font-size: 0.8rem; color: #9F1239; line-height: 1.4; margin-bottom: 10px; }
-        .insta-btn { display: flex; align-items: center; justify-content: center; background: #E1306C; color: white; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-decoration: none; }
+        /* ====== OTIMIZAÇÃO PARA LOUSA DIGITAL (LANDSCAPE) ====== */
+        @media (min-width: 768px) and (orientation: landscape) {
+            #app-container { max-width: 100%; border-radius: 0; }
+            header { padding: 20px 40px; }
+            .header-controls { gap: 15px; }
+            .btn-nav { width: 60px; height: 60px; border-radius: 12px; }
+            .btn-nav svg { width: 34px; height: 34px; }
+            #header-title { font-size: 2rem; }
+            
+            main { padding: 40px; }
+            .phase-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+            .phase-card { padding: 30px 20px; border-radius: 16px; border-width: 3px; }
+            .phase-card .letter { font-size: 4rem; }
+            .phase-card .status-dot { font-size: 1.2rem; }
+            
+            .progress-container { margin-bottom: 30px; }
+            .progress-bg { height: 16px; border-radius: 8px; }
+            .progress-text { font-size: 1.2rem; margin-bottom: 10px; }
+            
+            .syllable-display { min-height: 50vh; border-radius: 30px; border-width: 4px; margin-bottom: 40px; }
+            .btn-speak { width: 80px; height: 80px; top: 30px; left: 30px; padding: 15px; }
+            .timer-badge { font-size: 2.5rem; top: 30px; right: 30px; padding: 10px 30px; border-radius: 30px; }
+            
+            .training-actions { gap: 60px; padding: 0 40px 40px 40px; }
+            .btn-train { padding: 50px; font-size: 6rem; border-radius: 24px; box-shadow: 0 10px 0 rgba(0,0,0,0.2) !important; }
+            
+            .modal-content { max-width: 600px; padding: 40px; border-radius: 30px; }
+            .modal-content h3 { font-size: 2rem; margin-bottom: 25px !important; }
+            .btn-modal { font-size: 1.4rem; padding: 25px; border-radius: 16px; margin-top: 20px; }
+            .help-item strong { font-size: 1.4rem; }
+            .help-item p { font-size: 1.2rem; }
+            #modal-title { font-size: 5rem !important; }
+            #modal-msg { font-size: 1.8rem !important; }
+            
+            /* Ajustes nos inputs e textareas do modal para lousa */
+            input[type="text"], input[type="tel"], #gm-words-input { font-size: 1.5rem; padding: 20px; border-width: 3px; }
+            .config-info strong { font-size: 1.4rem; }
+            .config-info small { font-size: 1.1rem; }
+            .switch { width: 70px; height: 36px; }
+            .slider-toggle:before { height: 28px; width: 28px; left: 4px; bottom: 4px; }
+            input:checked + .slider-toggle:before { transform: translateX(34px); }
+            .preset-btn { font-size: 1.5rem; padding: 20px 0; }
+        }
     </style>
 </head>
 <body>
@@ -120,7 +159,7 @@
             <button class="btn-nav" onclick="uiClick(); toggleHelp(true, false);" title="Ajuda">?</button>
         </div>
         
-        <h2 id="header-title" style="font-size: 1.1rem;">Âncora Treino</h2>
+        <h2 id="header-title" style="font-size: 1.1rem;">Âncora Treino v8.0</h2>
         
         <div class="header-controls">
             <button class="btn-nav" onclick="uiClick(); openSettings();" title="Configurações">
@@ -139,7 +178,7 @@
             <div style="margin-top: auto; padding-top: 20px; display: flex; gap: 10px;">
                 <button class="btn-modal" style="background: var(--primary); color: white; flex: 1; margin-top: 0; font-size: 0.95rem; padding: 15px 5px;" onclick="uiClick(); generateJSONReport()">📋 Resumido</button>
                 <button class="btn-modal" style="background: #64748B; color: white; flex: 1; margin-top: 0; font-size: 0.95rem; padding: 15px 5px;" onclick="uiClick(); generateDetailedReport()">📋 Completo (PDF)</button>
-                <textarea id="report-text" readonly style="display:none;"></textarea>
+                <textarea id="report-text" readonly style="display:none; position:absolute; left:-9999px;"></textarea>
             </div>
         </div>
 
@@ -194,12 +233,12 @@
         <h3 style="margin-bottom: 15px; color: #FF9800; text-align: center;">Jogo da Palavra</h3>
         <div class="help-item">
             <strong>📝 Como funciona?</strong>
-            <p>Neste módulo extra, você pode adicionar palavras personalizadas para focar o treino na dificuldade exata do aluno. 
+            <p>Neste módulo extra, pode adicionar palavras personalizadas. 
             Separe as palavras por <b>vírgula ( , )</b>.</p>
-            <p style="margin-top: 8px; font-weight:bold; color:var(--primary-dark);"><i>Exemplo: macaco, banana, panela</i></p>
+            <p style="margin-top: 8px; font-weight:bold; color:var(--primary-dark);"><i>Exemplo: batata, cachorro, pílula</i></p>
         </div>
         <div style="margin-bottom: 15px; padding: 0 10px;">
-            <textarea id="gm-words-input" placeholder="macaco, banana, panela" style="display:block; width:100%; height:120px; padding:10px; border-radius:8px; border:2px solid #CBD5E1; font-size:1.1rem; font-family:sans-serif; resize:none;"></textarea>
+            <textarea id="gm-words-input" placeholder="batata, cachorro, pílula" style="display:block; width:100%; height:120px; padding:10px; border-radius:8px; border:2px solid #CBD5E1; font-size:1.1rem; font-family:sans-serif; resize:none;"></textarea>
         </div>
         <div style="display: flex; gap: 10px;">
             <button class="btn-modal" style="background: #E2E8F0; color: #333; flex: 1;" onclick="uiClick(); closeGMModal()">Cancelar</button>
@@ -224,6 +263,19 @@
                 <button class="preset-btn" id="btn-lvl-2" onclick="uiClick(); setPreset(2)">2</button>
                 <button class="preset-btn" id="btn-lvl-3" onclick="uiClick(); setPreset(3)">3</button>
                 <button class="preset-btn" id="btn-lvl-4" onclick="uiClick(); setPreset(4)">4</button>
+            </div>
+        </div>
+
+        <div class="config-section">
+            <div class="config-row">
+                <div class="config-info">
+                    <strong>Enviar para o WhatsApp</strong>
+                    <small>Abre o app de mensagens ao gerar o Relatório Resumido.</small>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="whatsapp-mode-toggle" onchange="uiClick();">
+                    <span class="slider-toggle"></span>
+                </label>
             </div>
         </div>
 
@@ -257,11 +309,6 @@
             </div>
         </div>
 
-        <div class="credits">
-            <p>Ferramenta gratuita desenvolvida de forma independente para treinos baseados em evidências.</p>
-            <a href="https://www.instagram.com/oanalistacomportamental/" target="_blank" class="insta-btn">@oanalistacomportamental</a>
-        </div>
-
         <div style="display: flex; gap: 10px; margin-top: 15px;">
             <button class="btn-modal" style="background: #E2E8F0; color: #333; flex: 1; margin-top: 0;" onclick="uiClick(); cancelSettings()">Cancelar</button>
             <button class="btn-modal" style="background: var(--primary); color: white; flex: 1; margin-top: 0;" onclick="uiClick(); closeSettings()">Confirmar</button>
@@ -274,36 +321,40 @@
         <h3 style="margin-bottom: 15px; color: var(--primary-dark);">Como Treinar</h3>
         <div class="help-item">
             <strong>📖 O Exercício</strong>
-            <p>A criança lê a sílaba que aparecer. Se ela ler certo, clique em ✔. Se errar ou demorar, clique em ✖.</p>
+            <p>O aluno lê a sílaba. Se ele ler certo, clique em ✔. Se errar ou demorar, clique em ✖.</p>
         </div>
         <div class="help-item">
-            <strong>🚫 Sem Dicas (Autonomia)</strong>
-            <p>Deixe a criança tentar sozinha. Não dê a resposta antes que ela tente.</p>
+            <strong>🚫 Sem Dicas</strong>
+            <p>Deixe o aluno tentar sozinho. Não dê respostas ou pistas durante a tarefa.</p>
         </div>
         <div class="help-item">
             <strong>🔄 Errou? Revise!</strong>
-            <p>No final, a fase mostra onde houve erros. Use o som (🔊) para a criança ouvir, repetir, e depois tentem a fase novamente.</p>
+            <p>No final, o app mostra os erros. Use o som (🔊) para ele ouvir, repetir e tente novamente.</p>
         </div>
         <div class="help-item">
             <strong>🔓 Evolução</strong>
-            <p>Ao acertar 100%, a próxima família de sílabas será liberada.</p>
+            <p>Acerte 100% para liberar a próxima letra. Ao concluir, pode aumentar a dificuldade nas configurações e recomeçar.</p>
         </div>
-        <button class="btn-modal" style="background: var(--primary); color: white;" onclick="uiClick(); toggleHelp(false, true)">Entendi, Começar</button>
+        <button class="btn-modal" style="background: var(--primary); color: white;" onclick="uiClick(); toggleHelp(false, true)">Começar</button>
     </div>
 </div>
 
 <div id="modal-name" class="modal-overlay">
     <div class="modal-content" style="text-align: left;">
-        <h3 style="margin-bottom: 15px; color: var(--primary-dark); text-align: center;">Identificação</h3>
+        <h3 style="margin-bottom: 15px; color: var(--primary-dark); text-align: center;">Configuração Inicial</h3>
         <div class="help-item">
             <strong>📋 Registro de Evolução</strong>
-            <p>As informações ficarão salvas no cabeçalho do relatório que você enviar para a escola.</p>
+            <p>Estes dados serão usados para organizar os relatórios enviados ao professor.</p>
         </div>
         <div style="margin-bottom: 15px; padding: 0 10px;">
-            <p style="font-size: 0.85rem; color: #475569; margin-bottom: 8px;"><strong>Qual o nome da criança que vai treinar?</strong></p>
-            <input type="text" id="student-name-input" placeholder="Digite o nome..." autocomplete="off">
+            <p style="font-size: 0.85rem; color: #475569; margin-bottom: 4px;"><strong>Qual o nome da criança?</strong></p>
+            <input type="text" id="student-name-input" placeholder="Nome completo..." autocomplete="off">
+            
+            <p style="font-size: 0.85rem; color: #475569; margin-top: 15px; margin-bottom: 4px;"><strong>WhatsApp do Professor (opcional):</strong></p>
+            <input type="tel" id="teacher-whatsapp-input" placeholder="Ex: 79912345678" autocomplete="off">
+            <small style="color: #94A3B8; font-size: 0.75rem; display: block; margin-top: -5px;">Apenas números com DDD.</small>
         </div>
-        <button class="btn-modal" style="background: var(--success); color: white;" onclick="uiClick(); saveName()">Salvar e Iniciar</button>
+        <button class="btn-modal" style="background: var(--success); color: white;" onclick="uiClick(); saveName()">Salvar e Treinar</button>
     </div>
 </div>
 
@@ -315,44 +366,21 @@
             <div class="review-header">Ouvir e Repetir:</div>
             <div id="review-list" class="review-list"></div>
         </div>
-        <button class="btn-modal" style="background: var(--success); color: white;" id="btn-modal-next" onclick="uiClick(); nextPhase()">Próxima Família</button>
+        <button class="btn-modal" style="background: var(--success); color: white;" id="btn-modal-next" onclick="uiClick(); nextPhase()">Próxima Letra</button>
         <button class="btn-modal" style="background: #E2E8F0; color: #333;" onclick="uiClick(); retryPhase()">Tentar Novamente</button>
-        <button class="btn-modal" style="background: #F1F5F9; color: #475569;" onclick="uiClick(); showMenu()">Voltar ao Início</button>
+        <button class="btn-modal" style="background: #F1F5F9; color: #475569;" onclick="uiClick(); showMenu()">Início</button>
     </div>
 </div>
 
 <script>
-    // Gerenciamento dos Modais Customizados
     let confirmCallback = null;
+    function showCustomAlert(title, msg) { document.getElementById('custom-alert-title').innerText = title; document.getElementById('custom-alert-msg').innerText = msg; document.getElementById('custom-alert').style.display = 'flex'; }
+    function closeCustomAlert() { uiClick(); document.getElementById('custom-alert').style.display = 'none'; }
+    function showCustomConfirm(title, msg, callback) { document.getElementById('custom-confirm-title').innerText = title; document.getElementById('custom-confirm-msg').innerText = msg; confirmCallback = callback; document.getElementById('custom-confirm').style.display = 'flex'; }
+    function closeCustomConfirm(result) { uiClick(); document.getElementById('custom-confirm').style.display = 'none'; if (confirmCallback) { confirmCallback(result); confirmCallback = null; } }
 
-    function showCustomAlert(title, msg) {
-        document.getElementById('custom-alert-title').innerText = title;
-        document.getElementById('custom-alert-msg').innerText = msg;
-        document.getElementById('custom-alert').style.display = 'flex';
-    }
+    const { jsPDF } = window.jspdf;
 
-    function closeCustomAlert() {
-        uiClick();
-        document.getElementById('custom-alert').style.display = 'none';
-    }
-
-    function showCustomConfirm(title, msg, callback) {
-        document.getElementById('custom-confirm-title').innerText = title;
-        document.getElementById('custom-confirm-msg').innerText = msg;
-        confirmCallback = callback;
-        document.getElementById('custom-confirm').style.display = 'flex';
-    }
-
-    function closeCustomConfirm(result) {
-        uiClick();
-        document.getElementById('custom-confirm').style.display = 'none';
-        if (confirmCallback) {
-            confirmCallback(result);
-            confirmCallback = null;
-        }
-    }
-
-    // Inicialização segura de áudio e sons
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playTone(freq, type, duration, vol) {
         const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
@@ -374,7 +402,6 @@
         window.speechSynthesis.cancel(); window.speechSynthesis.speak(utterance);
     }
 
-    // Configurações dos Blocos e Elementos
     const vowels = ['A', 'E', 'I', 'O', 'U', 'ÃO'];
     const vowelEncounters = ['AE', 'AI', 'EI', 'IA', 'OU', 'UI', 'IU'];
     const blockConfig = [
@@ -394,33 +421,45 @@
 
     const cvcArr = ['NAS','LES','BIS','MOS','CUS','PAS','CAN','NEM','VIM','BOM','MUM','GEN','CON','BAR','FER','CIR','POR','SUR','MAR','CAL','MEL','MIL','SOL','SUL','DEZ','PAZ'];
 
-    // Lógica de Carregamento de Estado
     let state = JSON.parse(localStorage.getItem('ancora_treino_state')) || {};
+    
     state.unlocked = state.unlocked || ['C'];
     state.history = state.history || {};
     state.studentName = state.studentName || '';
+    state.teacherWhatsapp = state.teacherWhatsapp || '';
+    state.whatsappEnabled = state.whatsappEnabled || false;
     state.easyMode = state.easyMode || false;
     state.fluencyMode = state.fluencyMode || false;
     state.timeLimit = state.timeLimit || 1;
     state.currentLevel = state.currentLevel !== undefined ? state.currentLevel : 3;
     state.customWords = state.customWords || [];
+    state.frequencia = state.frequencia || []; 
 
     let session = { letter: '', items: [], index: 0, answers: [], timerId: null, isPseudo: false, isCVC: false, isGM: false };
     let tempLevel = state.currentLevel;
 
     const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
 
+    function saveState() {
+        localStorage.setItem('ancora_treino_state', JSON.stringify(state));
+    }
+
     function updateTimeLabel() { document.getElementById('time-val').innerText = document.getElementById('time-slider').value + 's'; }
     
     function toggleHelp(show, save) { 
         document.getElementById('modal-help').style.display = show ? 'flex' : 'none'; 
         if (save) localStorage.setItem('ancora_help_seen', 'true');
-        if (!show && (!state.studentName || state.studentName === '')) { document.getElementById('modal-name').style.display = 'flex'; }
+        if (!show && (!state.studentName || state.studentName === '')) { 
+            if(state.studentName) document.getElementById('student-name-input').value = state.studentName;
+            if(state.teacherWhatsapp) document.getElementById('teacher-whatsapp-input').value = state.teacherWhatsapp;
+            document.getElementById('modal-name').style.display = 'flex'; 
+        }
     }
 
     function openSettings() {
         document.getElementById('easy-mode-toggle').checked = state.easyMode;
         document.getElementById('fluency-toggle').checked = state.fluencyMode;
+        document.getElementById('whatsapp-mode-toggle').checked = state.whatsappEnabled;
         document.getElementById('time-slider').value = state.timeLimit || 1;
         tempLevel = state.currentLevel;
         
@@ -451,16 +490,18 @@
         const newEasyMode = document.getElementById('easy-mode-toggle').checked;
         const newFluencyMode = document.getElementById('fluency-toggle').checked;
         const newTimeLimit = parseInt(document.getElementById('time-slider').value);
+        const newWppEnabled = document.getElementById('whatsapp-mode-toggle').checked;
         const newLevel = tempLevel;
 
         const hasChanged = newEasyMode !== state.easyMode || newFluencyMode !== state.fluencyMode || newTimeLimit !== state.timeLimit || newLevel !== state.currentLevel;
 
         if (hasChanged) {
             showCustomConfirm("Atenção", "Mudar as configurações irá reiniciar todas as fases para garantir a validade do relatório.\n\nDeseja continuar?", function(confirmed) {
-                if (confirmed) {
+                if(confirmed) {
                     state.easyMode = newEasyMode;
                     state.fluencyMode = newFluencyMode;
                     state.timeLimit = newTimeLimit;
+                    state.whatsappEnabled = newWppEnabled;
                     state.currentLevel = newLevel;
                     
                     state.unlocked = ['C'];
@@ -468,24 +509,33 @@
                     state.lastUsedFluency = null;
                     state.lastUsedEasyMode = null;
                     
-                    localStorage.setItem('ancora_treino_state', JSON.stringify(state));
+                    saveState();
                     document.getElementById('modal-settings').style.display = 'none';
                     renderGrid(); 
                 } else {
                     document.getElementById('modal-settings').style.display = 'none';
                 }
             });
-        } else { document.getElementById('modal-settings').style.display = 'none'; }
+        } else { 
+            state.whatsappEnabled = newWppEnabled;
+            saveState();
+            document.getElementById('modal-settings').style.display = 'none'; 
+        }
     }
 
     function saveName() {
         const inputName = document.getElementById('student-name-input').value.trim();
-        if (!inputName) { 
-            showCustomAlert("Aviso", "Por favor, digite o nome da criança para identificarmos nos relatórios."); 
-            return; 
-        }
+        const inputWpp = document.getElementById('teacher-whatsapp-input').value.replace(/\D/g, ''); 
+        
+        if (!inputName) { showCustomAlert("Aviso", "Por favor, preencha o nome da criança."); return; }
+        
         state.studentName = inputName;
-        localStorage.setItem('ancora_treino_state', JSON.stringify(state));
+        state.teacherWhatsapp = inputWpp;
+        if (inputWpp) {
+            state.whatsappEnabled = true;
+            document.getElementById('whatsapp-mode-toggle').checked = true;
+        }
+        saveState();
         document.getElementById('modal-name').style.display = 'none';
         localStorage.setItem('ancora_setup_complete', 'true');
     }
@@ -515,7 +565,7 @@
         const pseudoUnlocked = allDone;
         const pseudoCard = document.createElement('div');
         pseudoCard.className = `phase-card ${!pseudoUnlocked ? 'locked' : ''}`;
-        pseudoCard.innerHTML = `<span class="letter" style="color: #E91E63; font-size:1.6rem;">PS</span><span class="status-dot">${pseudoUnlocked ? 'Gerador Palavras' : '🔒'}</span>`;
+        pseudoCard.innerHTML = `<span class="letter" style="color: #E91E63; font-size:1.6rem;">PS</span><span class="status-dot">${pseudoUnlocked ? 'Gerador de Palavras' : '🔒'}</span>`;
         pseudoCard.onclick = () => { if(pseudoUnlocked) { uiClick(); startPseudoWords(); } };
         grid.appendChild(pseudoCard);
 
@@ -532,13 +582,10 @@
     function startGM() {
         const input = document.getElementById('gm-words-input').value;
         let words = input.split(',').map(w => w.trim()).filter(w => w.length > 0);
-        if (words.length === 0) { 
-            showCustomAlert("Aviso", "Por favor, digite pelo menos uma palavra para jogar, separando-as por vírgula."); 
-            return; 
-        }
+        if (words.length === 0) { showCustomAlert("Aviso", "Adicione pelo menos uma palavra no formato correto."); return; }
         
         state.customWords = words;
-        localStorage.setItem('ancora_treino_state', JSON.stringify(state));
+        saveState();
         
         session = { letter: 'GM', items: shuffle(words), index: 0, answers: [], timerId: null, isPseudo: false, isCVC: false, isGM: true };
         document.getElementById('modal-gm').style.display = 'none';
@@ -586,8 +633,16 @@
     function renderStep() {
         stopTimer(); const syllable = session.items[session.index], display = document.getElementById('current-syllable'), btnRight = document.getElementById('btn-right');
         
-        if (session.isGM) { display.style.fontSize = '2.5rem'; display.style.letterSpacing = '1px'; } 
-        else { display.style.fontSize = '4rem'; display.style.letterSpacing = '3px'; }
+        // Ajuste responsivo no Javascript para Landscape (Lousa)
+        const isLandscape = window.innerWidth > 768;
+
+        if (session.isGM) { 
+            display.style.fontSize = isLandscape ? '6rem' : '2.5rem'; 
+            display.style.letterSpacing = '1px'; 
+        } else { 
+            display.style.fontSize = isLandscape ? '12rem' : '4rem'; 
+            display.style.letterSpacing = '3px'; 
+        }
         
         display.innerText = syllable; display.style.color = '#1E293B'; btnRight.disabled = false;
         document.getElementById('current-step-label').innerText = `Item ${session.index + 1} de ${session.items.length}`;
@@ -622,10 +677,17 @@
             if (curIdx >= 0 && curIdx < blockConfig.length - 1) { 
                 const next = blockConfig[curIdx+1].c; 
                 if(!state.unlocked.includes(next)) state.unlocked.push(next); 
-            } 
-        } else if (allCorrect) { soundWin(); }
+            }
+            
+            const today = new Date().toLocaleDateString('pt-BR');
+            if (!state.frequencia.includes(today)) {
+                state.frequencia.push(today);
+            }
+        } else if (allCorrect) { 
+            soundWin(); 
+        }
 
-        if (!session.isPseudo) localStorage.setItem('ancora_treino_state', JSON.stringify(state));
+        if (!session.isPseudo) saveState();
         
         const modalTitle = document.getElementById('modal-title'), modalMsg = document.getElementById('modal-msg'), reviewContainer = document.getElementById('review-container'), reviewList = document.getElementById('review-list'), btnNext = document.getElementById('btn-modal-next');
         
@@ -661,9 +723,7 @@
         const getCat = (syl, conf) => {
             if (conf.customCV && conf.customCV.includes(syl)) return 'CV';
             if (conf.hasCCV && conf.ccvArr && conf.ccvArr.includes(syl)) return 'CCV';
-            for (let ve of vowelEncounters) {
-                if (syl.endsWith(ve)) return 'CVV';
-            }
+            for (let ve of vowelEncounters) { if (syl.endsWith(ve)) return 'CVV'; }
             return 'CV';
         };
 
@@ -679,10 +739,7 @@
                 if (!geral['CVC']) geral['CVC'] = [0,0];
                 hist.forEach(ans => {
                     geral['CVC'][1]++;
-                    if (ans.correct) {
-                        geral['CVC'][0]++;
-                        acertos++;
-                    }
+                    if (ans.correct) { geral['CVC'][0]++; acertos++; }
                 });
                 fam['CVC'] = [acertos, total];
                 continue;
@@ -695,7 +752,6 @@
 
             hist.forEach(ans => {
                 if (ans.correct) acertos++;
-                
                 if (key === currentPhaseKey) {
                     let cat = getCat(ans.syllable, conf);
                     if (!geral[cat]) geral[cat] = [0,0];
@@ -708,9 +764,7 @@
         }
 
         let cleanedGeral = {};
-        for(let k in geral) {
-            if(geral[k][1] > 0) cleanedGeral[k] = geral[k];
-        }
+        for(let k in geral) { if(geral[k][1] > 0) cleanedGeral[k] = geral[k]; }
 
         let reportObj = {
             n: state.studentName ? state.studentName.toUpperCase() : "NÃO INFORMADO",
@@ -718,22 +772,51 @@
             nv: state.currentLevel > 0 ? state.currentLevel : 0,
             tmp: state.lastUsedFluency ? state.lastUsedFluency : null,
             geral: cleanedGeral,
-            fam: fam
+            fam: fam,
+            freq: state.frequencia || [] 
         };
 
         let jsonStr = JSON.stringify(reportObj);
 
-        const area = document.getElementById('report-text');
-        area.value = jsonStr;
-        area.style.display = 'block';
-        area.select();
-        document.execCommand('copy');
-        area.style.display = 'none';
-        
-        showCustomAlert("Resumo Copiado!", "O resumo do treino foi copiado! Agora você já pode colar na conversa do WhatsApp e enviar para o professor(a) avaliar a evolução.");
+        if (state.whatsappEnabled && state.teacherWhatsapp) {
+            showCustomConfirm("Enviar Relatório?", "Você será redirecionado para o WhatsApp. O histórico de dias treinados será zerado para iniciar um novo ciclo de acompanhamento. Deseja continuar?", function(confirmed) {
+                if (confirmed) {
+                    const area = document.getElementById('report-text');
+                    area.style.display = 'block';
+                    area.value = jsonStr;
+                    area.select();
+                    document.execCommand('copy');
+                    area.style.display = 'none';
+                    
+                    state.frequencia = [];
+                    saveState();
+                    
+                    let phone = state.teacherWhatsapp;
+                    if(phone.length <= 11) { phone = '55' + phone; }
+                    
+                    const encodedText = encodeURIComponent(jsonStr);
+                    window.open(`https://wa.me/${phone}?text=${encodedText}`, '_blank');
+                }
+            });
+        } else {
+            showCustomConfirm("Copiar Relatório?", "O relatório será copiado e o histórico de dias treinados será zerado para iniciar um novo ciclo. Deseja continuar?", function(confirmed) {
+                if (confirmed) {
+                    const area = document.getElementById('report-text');
+                    area.style.display = 'block';
+                    area.value = jsonStr;
+                    area.select();
+                    document.execCommand('copy');
+                    area.style.display = 'none';
+                    
+                    state.frequencia = [];
+                    saveState();
+                    
+                    showCustomAlert("Copiado!", "O resumo do treino foi copiado! Agora você pode colar na conversa com o professor(a).");
+                }
+            });
+        }
     }
 
-    // GERAÇÃO DE PDF TABULADO COM GRELHA DE 6 COLUNAS
     function generateDetailedReport() {
         if (!window.jspdf) {
             showCustomAlert("Aguarde...", "O gerador de arquivos está sendo inicializado. Aguarde um segundo e tente novamente.");
@@ -743,10 +826,8 @@
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF('p', 'mm', 'a4');
 
-        // Header Azul Âncora
-        doc.setFillColor(25, 118, 210); // primary-dark
+        doc.setFillColor(25, 118, 210);
         doc.rect(0, 0, 210, 40, 'F');
-        
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(22);
         doc.setFont("helvetica", "bold");
@@ -757,7 +838,6 @@
         const dateStr = new Date().toLocaleDateString('pt-BR');
         doc.text(`Data da Emissão: ${dateStr}`, 105, 30, { align: "center" });
 
-        // Informações do Aluno e Configurações
         doc.setTextColor(50, 50, 50);
         doc.setFontSize(12);
         doc.text(`ALUNO(A): ${state.studentName ? state.studentName.toUpperCase() : 'NÃO INFORMADO'}`, 14, 50);
@@ -770,11 +850,9 @@
 
         let tableBody = [];
         
-        // Função auxiliar para inserir os dados de cada fase na tabela com layout de 6 colunas
         const addPhaseData = (phaseName, historyArray) => {
             if (!historyArray || historyArray.length === 0) return;
             
-            // Cria a linha de cabeçalho cinza para a fase ocupando as 6 colunas
             tableBody.push([
                 { 
                     content: `Fase: ${phaseName} (${historyArray.filter(x=>x.correct).length}/${historyArray.length} acertos)`, 
@@ -783,7 +861,6 @@
                 }
             ]);
             
-            // Agrupa os itens de 3 em 3 para preencher a grelha horizontalmente
             for (let i = 0; i < historyArray.length; i += 3) {
                 let row = [];
                 for (let j = 0; j < 3; j++) {
@@ -792,7 +869,6 @@
                         row.push(item.syllable);
                         row.push(item.correct ? 'ACERTO' : 'ERRO');
                     } else {
-                        // Preenche com células vazias caso não haja itens suficientes para fechar a linha
                         row.push("");
                         row.push("");
                     }
@@ -801,10 +877,7 @@
             }
         };
 
-        // Alimenta a tabela com o histórico sequencial
-        blockConfig.forEach(conf => {
-            addPhaseData(`Letra ${conf.c}`, state.history[conf.c]);
-        });
+        blockConfig.forEach(conf => { addPhaseData(`Letra ${conf.c}`, state.history[conf.c]); });
         addPhaseData('Módulo Extra (CVC)', state.history['CVC']);
         addPhaseData('Jogo da Palavra (GM)', state.history['GM']);
 
@@ -813,7 +886,6 @@
             return;
         }
 
-        // Renderiza a grelha de 6 colunas usando autoTable
         doc.autoTable({
             startY: 78,
             head: [['Sílaba/Palavra', 'Resultado', 'Sílaba/Palavra', 'Resultado', 'Sílaba/Palavra', 'Resultado']],
@@ -821,15 +893,11 @@
             theme: 'grid',
             headStyles: { fillColor: [33, 150, 243], textColor: [255, 255, 255], fontStyle: 'bold', halign: 'center' },
             columnStyles: {
-                0: { halign: 'center' },
-                1: { halign: 'center', fontStyle: 'bold' },
-                2: { halign: 'center' },
-                3: { halign: 'center', fontStyle: 'bold' },
-                4: { halign: 'center' },
-                5: { halign: 'center', fontStyle: 'bold' }
+                0: { halign: 'center' }, 1: { halign: 'center', fontStyle: 'bold' },
+                2: { halign: 'center' }, 3: { halign: 'center', fontStyle: 'bold' },
+                4: { halign: 'center' }, 5: { halign: 'center', fontStyle: 'bold' }
             },
             didParseCell: function(data) {
-                // Colore condicionalmente o texto de ACERTO (verde) e ERRO (vermelho) apenas nas colunas de Resultado (índices 1, 3 e 5)
                 if (data.section === 'body') {
                     if (data.column.index === 1 || data.column.index === 3 || data.column.index === 5) {
                         if (data.cell.raw === 'ACERTO') {
@@ -842,16 +910,15 @@
             }
         });
 
-        // Salva e faz download do PDF
         const fileName = `Relatorio_Ancora_Completo_${state.studentName ? state.studentName.replace(/\s+/g, '_') : 'Aluno'}.pdf`;
         doc.save(fileName);
-        showCustomAlert("Sucesso!", "O arquivo PDF foi gerado e o download começou. Agora você pode enviá-lo para o professor(a).");
+        showCustomAlert("PDF Baixado!", "O arquivo PDF foi gerado com sucesso. Você pode enviá-lo ao professor(a) se desejar.");
     }
 
     function promptResetSystem() { 
-        showCustomConfirm("Tem Certeza?", "Esta ação irá EXCLUIR TODO O SEU PROGRESSO, o nome cadastrado e as configurações.\n\nO aplicativo voltará ao estado inicial (zero). Deseja continuar?", function(confirmed) {
+        showCustomConfirm("Tem Certeza?", "Esta ação irá EXCLUIR TODO O SEU PROGRESSO, os dados cadastrados e as configurações.\n\nO aplicativo voltará ao estado inicial (zero). Deseja continuar?", function(confirmed) {
             if (confirmed) {
-                state = {unlocked:['C'], history:{}, studentName:'', easyMode: false, fluencyMode: false, timeLimit: 1, currentLevel: 3, customWords: []}; 
+                state = {unlocked:['C'], history:{}, studentName:'', teacherWhatsapp: '', whatsappEnabled: false, easyMode: false, fluencyMode: false, timeLimit: 1, currentLevel: 3, customWords: [], frequencia: []}; 
                 localStorage.clear(); 
                 showMenu(); 
                 toggleHelp(true, false);
@@ -881,18 +948,27 @@
     
     window.onload = () => {
         if (!localStorage.getItem('ancora_help_seen')) { toggleHelp(true, false); } 
-        else if (!state.studentName || state.studentName === '') { document.getElementById('modal-name').style.display = 'flex'; }
+        else if (!state.studentName || state.studentName === '') { 
+            if(state.studentName) document.getElementById('student-name-input').value = state.studentName;
+            if(state.teacherWhatsapp) document.getElementById('teacher-whatsapp-input').value = state.teacherWhatsapp;
+            document.getElementById('modal-name').style.display = 'flex'; 
+        }
+        
+        // Listener extra de resize para atualizar tamanho da fonte em tempo real caso a janela mude de orientação com a fase aberta
+        window.addEventListener('resize', () => {
+            if (document.getElementById('screen-train').classList.contains('active')) {
+                const display = document.getElementById('current-syllable');
+                const isLandscape = window.innerWidth > 768;
+                if (session.isGM) { 
+                    display.style.fontSize = isLandscape ? '6rem' : '2.5rem'; 
+                } else { 
+                    display.style.fontSize = isLandscape ? '12rem' : '4rem'; 
+                }
+            }
+        });
+
         renderGrid();
     };
-
-    // --- REGISTRO DO SERVICE WORKER ---
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-                .then((reg) => console.log('SW Registrado. Escopo:', reg.scope))
-                .catch((err) => console.error('Erro ao registrar SW:', err));
-        });
-    }
 </script>
 </body>
 </html>
